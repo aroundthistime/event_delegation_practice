@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    table {
+       border-collapse: collapse;
+     }
+     th, td {
+       border: 1px solid black;
+       padding: 4px;
+     }
+     th {
+       cursor: pointer;
+     }
+     th:hover {
+       background: yellow;
+     }
+  </style>
+</head>
+
+<body>
+
+  <table id="grid">
+    <thead>
+      <tr>
+        <th data-type="number">Age</th>
+        <th data-type="string">Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>5</td>
+        <td>John</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Pete</td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td>Ann</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>Eugene</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>Ilya</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <script>
+    class Table {
+        constructor(elem) {
+            this._elem = elem;
+            elem.onclick = this.onClick.bind(this);
+        }
+
+        _getBody() {
+            return this._elem.querySelector('tbody');
+        }
+
+        _getItems() {
+            const tbody = this._getBody();
+            return tbody.querySelectorAll('tr');
+        }
+
+        _initializeBody() {
+            const tbody = this._getBody();
+            tbody.innerHtml = '';
+        }
+
+        _getItemsAndClear() {
+            const itemsInNodeList = this._getItems();
+            this._initializeBody();
+            const itemsInList = [].slice.call(itemsInNodeList)
+            return itemsInList;
+        }
+
+        _appendItems(items){
+            const tbody = this._getBody();
+            items.forEach(item => {
+                tbody.appendChild(item);
+            })
+        }
+
+        _getNumberFromItem(item) {
+            const tdWithNumber = item.querySelectorAll('td')[0];
+            const numberText = tdWithNumber.innerText;
+            return parseFloat(numberText);
+        }
+
+        _compareByNumber(item1, item2){
+            const item1Number = this._getNumberFromItem(item1);
+            const item2Number = this._getNumberFromItem(item2);
+            return item1Number - item2Number;
+        }
+
+        _sortByNumber(){
+            const itemsToSort = this._getItemsAndClear();
+            const sortedItems = itemsToSort.sort(this._compareByNumber.bind(this));
+            this._appendItems(sortedItems);
+        }
+
+        _getStrFromItem(item){
+            const tdWithStr = item.querySelectorAll('td')[1];
+            return tdWithStr.innerText;
+        }
+
+        _compareByString(item1, item2){
+            const item1Str = this._getStrFromItem(item1);
+            const item2Str = this._getStrFromItem(item2);
+            return item1Str > item2Str ? 1 : -1;
+        }
+
+        _sortByString(){
+            const itemsToSort = this._getItemsAndClear();
+            const sortedItems = itemsToSort.sort(this._compareByString.bind(this));
+            this._appendItems(sortedItems);
+        }
+
+        _getSortFunctionByDataType(dataType){
+            if (!dataType) {
+                return ;
+            }
+            const dataTypeWithFirstLetterUppercase = dataType.charAt(0).toUpperCase() + dataType.slice(1);
+            const sortFunctionName = `_sortBy${dataTypeWithFirstLetterUppercase}`;
+            if (this[sortFunctionName]){
+                return this[sortFunctionName].bind(this)
+            }
+            return this[sortFunctionName];
+        }
+
+        onClick(event){
+            const th = event.target.closest('th');
+            if (!th || !this._elem.contains(th)){
+                return ;
+            }
+            const sortMethod = this._getSortFunctionByDataType(th.dataset.type);
+            if (sortMethod){
+                sortMethod();
+            }
+        }
+    }
+
+    new Table(grid);
+  </script>
+
+</body>
+</html>
