@@ -1,0 +1,37 @@
+
+<div id="container">
+    <button data-action="undo">되돌리기</button> 
+    <button data-action="reload">새로고침</button>
+    <button data-action="save">저장하기</button>
+</div>
+<script>
+    class Container {
+        constructor(elem) {
+            this._elem = elem;
+            elem.onclick = this.onClick.bind(this);
+        }
+        
+        undo(){
+            //이전 상태 복구
+        }
+        
+        reload(){
+            // 새로 고침
+        }
+
+        save(){
+            // 현재 상태 저장
+        }
+
+        onClick(event) {
+            const action = event.target.dataset.action;
+            if (action && this[action]){
+                this[action];
+            }
+        }
+    }
+
+    
+    new Container(container);
+</script>
+
