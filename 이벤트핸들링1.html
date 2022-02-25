@@ -1,0 +1,23 @@
+
+<div id="container">
+    <button data-alert-text="하나">1</button>
+    <button data-alert-text="둘">2</button>
+    <button data-alert-text="셋">3</button> 
+</div>
+<script>
+    class Container {
+        constructor(elem) {
+            this._elem = elem;
+            elem.onclick = this.onClick.bind(this);
+        }
+
+        onClick(event) {
+            const alertText = event.target.dataset.alertText;
+            if (alertText) {
+                alert(alertText);
+            }
+        }
+    }
+
+    new Container(container);
+</script>
