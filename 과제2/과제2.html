@@ -1,0 +1,45 @@
+<ul id="container">
+    <li>
+        Animals
+        <ul>
+            <li>
+                Mammals
+                <ul>
+                    <li>Cows</li>
+                    <li>Donkeys</li>
+                    <li>Dogs</li>
+                    <li>Tigers</li>
+                </ul>
+            </li>
+            <li>
+                Other
+                <ul>
+                    <li>Snakes</li>
+                    <li>Birds</li>
+                    <li>Lizards</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li>Fishes</li>
+</ul>
+<script>
+    document.querySelectorAll('li').forEach(item => {
+        const span = document.createElement('span');
+        span.style.cursor = 'pointer';
+        item.prepend(span);
+        span.appendChild(span.nextSibling)
+    })
+
+    const container = document.getElementById('container');
+    container.addEventListener('click', function(event){
+        if (event.target.tagName !== 'SPAN'){
+            return ;
+        }
+
+        const listToToggle = event.target.parentNode.querySelector('ul')
+        if (listToToggle){
+            listToToggle.hidden = !listToToggle.hidden;
+        }
+    })
+</script>
