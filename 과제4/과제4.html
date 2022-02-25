@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <style>
+            body {
+            height: 2000px;
+            /* make body scrollable, the tooltip should work after the scroll */
+            }
+
+            .tooltip {
+            /* some styles for the tooltip, you can use your own instead */
+            position: fixed;
+            padding: 10px 20px;
+            border: 1px solid #b3c9ce;
+            border-radius: 4px;
+            text-align: center;
+            font: italic 14px/1.3 sans-serif;
+            color: #333;
+            background: #fff;
+            box-shadow: 3px 3px 3px rgba(0, 0, 0, .3);
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <p>LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa</p>
+        <p>LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa LaLaLa</p>
+
+        <button data-tooltip="the tooltip is longer than the element">Short button</button>
+        <button data-tooltip="HTML<br>tooltip">One more button</button>
+
+        <p>Scroll the page to make buttons appear on the top, check if the tooltips show up correctly.</p>
+
+
+        <script>
+            const TOOLTIP_CLASSNAME = 'tooltip';
+            let tooltip;
+
+            const createTooltip = (text) => {
+            const newTooltip = document.createElement('div');
+            newTooltip.className = TOOLTIP_CLASSNAME;
+            newTooltip.innerText = text;
+            return newTooltip;
+            }
+
+            const findButtonFromEventTarget = (event) => {
+            return event.target.closest('button');
+            }
+
+            const showTooltip = (event) => {
+                const button = findButtonFromEventTarget(event);
+                if (!button){
+                    return
+                }
+
+                const tooltipText = button.dataset.tooltip;
+                    if (tooltipText) {
+                        const newTooltip = createTooltip(tooltipText);
+                        button.appendChild(newTooltip);
+                        tooltip = newTooltip;
+                    }
+            }
+
+            const hideTooltip = (event) => {
+                if (tooltip){
+                    tooltip.parentNode.removeChild(tooltip);
+                    tooltip = null;
+                }
+            }
+
+            document.addEventListener('mouseover', showTooltip);
+            document.addEventListener('mouseout', hideTooltip);
+            
+        </script>
+
+    </body>
+</html>
