@@ -7,25 +7,6 @@
         <ul id="container" class="container">
         </ul>
         <script>
-            class Container {
-                constructor(elem) {
-                    this._elem = elem;
-                    elem.onclick = this.onClick.bind(this);
-                }
-
-                addAnimal(name, description){
-                    const animal = new Animal(name, description);
-                    animal.addToElement(this._elem);
-                }
-
-                onClick(event){
-                    const animalToClose = event.target.closest('.animal');
-                    if (animalToClose && this._elem.contains(animalToClose)){
-                        this._elem.removeChild(animalToClose);
-                    }
-                }
-            }
-
             class Animal {
                 constructor(name, description) {
                     this._name = name;
@@ -71,17 +52,25 @@
                 }
 
                 addToElement(elem){
-                    console.log(elem);
                     const animal = this._createAnimalElement();
                     elem.appendChild(animal)
                 }
             }
 
-            const animalContainer = new Container(container);
-            animalContainer.addAnimal('donkey', '당나귀는 어쩌고 저쩌고');
-            animalContainer.addAnimal('monkey', '원숭이는 어쩌고 저쩌고');
-            animalContainer.addAnimal('horse', '말은 또 어쩌고 저쩌고');
+            const container = document.getElementById('container');
+            container.addEventListener('click', function (event) {
+                const animalToClose = event.target.closest('.animal');
+                    if (animalToClose && this.contains(animalToClose)){
+                        this.removeChild(animalToClose);
+                    }
+            })
 
+            const donkey = new Animal('donkey', '당나귀는 어쩌고 저쩌고');
+            const monkey = new Animal('monkey', '원숭이는 어쩌고 저쩌고');
+            const horse = new Animal('horse', '말은 또 어쩌고 저쩌고');
+            donkey.addToElement(container);
+            monkey.addToElement(container);
+            horse.addToElement(container);
         </script>
     </body>
 </html>
