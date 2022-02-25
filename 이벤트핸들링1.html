@@ -8,7 +8,6 @@
     class Container {
         constructor(elem) {
             this._elem = elem;
-            elem.onclick = this.onClick.bind(this);
         }
 
         onClick(event) {
@@ -21,3 +20,4 @@
 
     new Container(container);
 </script>
+
